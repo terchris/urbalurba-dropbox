@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  dropbox-sync:
+  urbalurba-dropbox:
     image: urbalurba-dropbox:latest
     build:
       context: .
@@ -8,7 +8,8 @@ services:
     environment:
       DROPBOX_DIR: /sync
     volumes:
-      - ${URBALURBAFILES_VOLUME_NAME:-urbalurba_urbalurbafiles}:/sync
+#      - ${URBALURBAFILES_VOLUME_NAME:-urbalurbafiles}:/sync
+      - urbalurbafiles:/sync
       - dropbox_data:/dropbox
     networks:
       - urbalurba-network
@@ -18,6 +19,9 @@ services:
         condition: on-failure
 
 volumes:
+  urbalurbafiles:
+    external:
+      name: urbalurba_urbalurbafiles
   dropbox_data:
 
 networks:
