@@ -6,11 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      DROPBOX_UID: 1000
-      DROPBOX_GID: 1000
       DROPBOX_DIR: /sync
     volumes:
-      - ${URBALURBAFILES_VOLUME_NAME:=urbalurba_urbalurbafiles}:/sync
+      - ${URBALURBAFILES_VOLUME_NAME:-urbalurba_urbalurbafiles}:/sync
       - dropbox_data:/dropbox
     networks:
       - urbalurba-network
