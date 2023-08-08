@@ -1,0 +1,23 @@
+version: '3.7'
+services:
+  dropbox-sync:
+    image: urbalurba-dropbox:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DROPBOX_UID: 1000
+      DROPBOX_GID: 1000
+      DROPBOX_DIR: /sync
+    volumes:
+      - ${URBALURBAFILES_VOLUME_NAME:=urbalurba_urbalurbafiles}:/sync
+    networks:
+      - urbalurba-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  urbalurba-network:
+    external: true
