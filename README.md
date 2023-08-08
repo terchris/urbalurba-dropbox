@@ -6,7 +6,7 @@ Urbalurba system webscrapes all organisations in Norway and store the files in a
 This docker image syncs the files to dropbox.
 
 
-## testing
+## testing did not work - goint to test the ready made image
 
 Build it
 

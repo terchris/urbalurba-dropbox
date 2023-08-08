@@ -1,16 +1,16 @@
-version: '3.7'
+version: '3.8'
+
 services:
   urbalurba-dropbox:
-    image: urbalurba-dropbox:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: janeczku/dropbox
     environment:
-      DROPBOX_DIR: /sync
+      - DBOX_TOKEN=sl.BjySS0rZxqElO0qJCrr4v6LcMuvmP0exthAkg2jGa5E2hZ-cwcb-juFWvxyX4pSjYcGOS7h-9bPcoivP2Xkr-CKWnWgoeBvP0Ey2rcobJI8jOLFFv1P5jcSqs6cxQluctVf7YtzgGYPP
+      - DBOX_UID=0
+      - DBOX_GID=0
+      - $DBOX_SKIP_UPDATE=True
+    command: ["dropbox"]
     volumes:
-#      - ${URBALURBAFILES_VOLUME_NAME:-urbalurbafiles}:/sync
-      - urbalurbafiles:/sync
-      - dropbox_data:/dropbox
+      - urbalurbafiles:/dbox/Dropbox
     networks:
       - urbalurba-network
     deploy:
@@ -22,7 +22,7 @@ volumes:
   urbalurbafiles:
     external:
       name: urbalurba_urbalurbafiles
-  dropbox_data:
+
 
 networks:
   urbalurba-network:
