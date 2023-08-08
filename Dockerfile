@@ -1,22 +1,24 @@
-FROM debian:bullseye-slim
+# Use Ubuntu 22.04 as the base image
+FROM ubuntu:22.04
 
-# Environment variables
-ENV DROPBOX_DIR /sync # Updated this line to /sync
-ENV DROPBOX_UID 1000
-ENV DROPBOX_GID 1000
+# Set the sync directory environment variable
+ENV DROPBOX_DIR /sync
 
-# Install dependencies
+# Update the package lists and install required dependencies
 RUN apt-get update \
-    && apt-get install -y wget curl gnupg procps sudo
+    && apt-get install -y wget python3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Dropbox
-RUN echo "deb [arch=amd64,arm64] http://linux.dropbox.com/debian buster main" > /etc/apt/sources.list.d/dropbox.list \
-    && wget -O - https://linux.dropbox.com/fedora/rpm-public-key.asc | apt-key add - \
-    && apt-get update \
-    && apt-get install -y dropbox
+# Download the Dropbox CLI script
+RUN wget -O /usr/bin/dropbox "https://www.dropbox.com/download?dl=packages/dropbox.py" \
+    && chmod +x /usr/bin/dropbox
 
-# Add startup script
+# Copy the startup script into the container
 COPY start-dropbox.sh /start-dropbox.sh
+
+# Make the startup script executable
 RUN chmod +x /start-dropbox.sh
 
+# Set the entry point to the startup script
 ENTRYPOINT ["/start-dropbox.sh"]
